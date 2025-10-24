@@ -30,8 +30,24 @@ if ( !defined( 'ABSPATH' ) ) exit;
         <div class="wrap">
             <h1>OFI Events Admin</h1>
 
-
         <?php
+        global $wpdb;
+
+        $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ofi_events ORDER BY id DESC" );
+        
+        if( !empty($results) ){
+            foreach( $results as $event ){
+                ?>
+                <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                    <h2><?php echo esc_html( $event->title ); ?></h2>
+                    <p><strong>Date:</strong> <?php echo esc_html( $event->date ) . " time " . esc_html( $event->time ); ?></p>
+                    <p><strong>Location:</strong> <?php echo esc_html( $event->location ); ?></p>
+                    <p><strong>Description:</strong> <?php echo esc_html( $event->description ); ?></p>
+                </div>
+                <?php
+            }
+        }   
+
         }
     }
 
