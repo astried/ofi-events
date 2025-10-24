@@ -81,6 +81,10 @@ class OFI_EVENT
 	{
         include_once "admin/admin-main.php";
         include_once "admin/admin-new.php";
+        include_once "admin/admin-ajax.php";
+
+        include_once "shortcodes/shortcode-display-frontend.php";
+        include_once "shortcodes/shortcode-details-frontend.php";
 
         add_action( 'admin_enqueue_scripts', array( __CLASS__ , 'load_admin_scripts') );        
     }
@@ -92,13 +96,17 @@ class OFI_EVENT
             $ajax_url =  admin_url( 'admin-ajax.php' );
 
             wp_enqueue_style( 'ofi-event-ts', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' );
+
+            //Style for datepicker
+            wp_enqueue_style( 'jquery-ui-style', "https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" );
             
-            wp_enqueue_script('ofi-event-admin-js',  plugins_url( "/assets/script-admin.js", __FILE__ ) );
+            wp_enqueue_script('ofi-event-admin-js',  plugins_url( "/assets/script-admin.js", __FILE__ ),
+                                array('jquery', 'jquery-ui-datepicker'), null, true );
 
             wp_localize_script('ofi-event-admin-js', 'ofievent_Ajax',
                                 array( 'url' => $ajax_url,
-                                    'nonce' => ''
-                                        )
+                                    'nonce' => wp_create_nonce('ofievent_admin_nonce')
+                                    )
                                 );
 
             //wp_enqueue_style('ofi-event',  plugins_url( "/assets/bootstrap-5.0.2/css/bootstrap.css", __FILE__ ) );
